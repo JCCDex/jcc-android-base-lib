@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body>
+</body>
+<script src="jingtum.js"></script>
+<script>
+    function connectWebViewJavascriptBridge(callback) {
+        if (window.WebViewJavascriptBridge) {
+            callback(WebViewJavascriptBridge)
+        } else {
+            document.addEventListener(
+                'WebViewJavascriptBridgeReady',
+                function () {
+                    callback(WebViewJavascriptBridge)
+                },
+                false
+            );
+        }
+    }
+
+    connectWebViewJavascriptBridge(function (bridge) {
+        bridge.registerHandler("createJingtumWallet", function (chain, responseCallback) {
+            var wallet;
+            try {
+                wallet = Wallet.generate(chain);
+            } catch (e) {
+                wallet = null;
+            }
+            responseCallback(wallet);
+        });
+
+        bridge.registerHandler("importJingtumSecret", function (data, responseCallback) {
+            var wallet;
+            try {
+                data = JSON.parse(data);
+                wallet = Wallet.fromSecret(data.key, data.chain);
+            } catch (e) {
+                wallet = null;
+            }
+            responseCallback(wallet);
+        });
+
+
+        bridge.registerHandler("isJingtumAddress", function (data, responseCallback) {
+            var valid;
+            try {
+                data = JSON.parse(data);
+                valid = Wallet.isValidAddress(data.key, data.chain);
+            } catch (e) {
+                valid = false;
+            }
+            responseCallback(valid);
+        });
+
+        bridge.registerHandler("isJingtumSecret", function (data, responseCallback) {
+            var valid;
+            try {
+                data = JSON.parse(data);
+                valid = Wallet.isValidSecret(data.key, data.chain);
+            } catch (e) {
+                valid = false;
+            }
+            responseCallback(valid);
+        });
+
+        bridge.registerHandler("jingtumSignTx", function (data, responseCallback) {
+            var signature;
+            try {
+                data = JSON.parse(data);
+                var seed = {
+                    seed: data.secret
+                }
+                signature = LocalSign(data.transaction, seed, data.chain);
+            } catch (e) {
+                signature = null;
+            }
+            responseCallback(signature);
+        });
+    })
+</script>
+
+</html>
