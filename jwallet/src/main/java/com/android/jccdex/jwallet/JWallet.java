@@ -1,6 +1,8 @@
 package com.android.jccdex.jwallet;
 
-import com.github.lzyzsd.jsbridge.CallBackFunction;
+import com.android.jccdex.jwallet.base.JCallback;
+
+import org.json.JSONObject;
 
 /**
  * JWallet
@@ -12,37 +14,37 @@ public interface JWallet {
 
     /**
      * @param chain    default with swt.
-     * @param callBack
+     * @param callback
      */
-    void createWallet(String chain, CallBackFunction callBack);
+    void createWallet(String chain, JCallback callback);
 
     /**
      * @param secret
      * @param chain    default with swt.
-     * @param callBack
+     * @param callback
      */
-    void importSecret(String secret, String chain, CallBackFunction callBack);
+    void importSecret(String secret, String chain, JCallback callback);
 
     /**
      * @param address
      * @param chain    default with swt.
-     * @param callBack
+     * @param callback
      */
-    void isValidAddress(String address, String chain, CallBackFunction callBack);
+    void isValidAddress(String address, String chain, JCallback callback);
 
     /**
      * @param secret
      * @param chain    default with swt.
-     * @param callBack
+     * @param callback
      */
-    void isValidSecret(String secret, String chain, CallBackFunction callBack);
+    void isValidSecret(String secret, String chain, JCallback callback);
 
     /**
-     * @param transaction JsonString
+     * @param transaction JSONObject
      * @param secret
      * @param chain       default with swt.
-     * @param callBack
+     * @param callback
      */
-    void signTx(String transaction, String secret, String chain, CallBackFunction callBack);
+    void sign(JSONObject transaction, String secret, String chain, JCallback callback);
 
 }

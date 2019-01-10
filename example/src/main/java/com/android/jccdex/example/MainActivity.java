@@ -3,18 +3,14 @@ package com.android.jccdex.example;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.android.jccdex.jwallet.JWalletManager;
-import com.github.lzyzsd.jsbridge.CallBackFunction;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import com.android.jccdex.jwallet.JTWalletManager;
+import com.android.jccdex.jwallet.base.JCallback;
+import com.android.jccdex.jwallet.util.JCCJson;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "MainActivity";
 
@@ -27,15 +23,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static EditText mEscEditText;
     private EditText mChaEditText;
     private TextView mOutputTextView;
-    private JWalletManager mJWalletManager;
+    private JTWalletManager mJTWalletManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        mJWalletManager = JWalletManager.getInstance(this);
-
+        mJTWalletManager = JTWalletManager.getInstance(this);
         mCreateButton = findViewById(R.id.createWallet);
         mCreateButton.setOnClickListener(this);
         mImportButton = findViewById(R.id.importWallet);
@@ -56,48 +51,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         if (v == mCreateButton) {
-            CallBackFunction callBackFunction = new CallBackFunction() {
+            mJTWalletManager.createWallet(mChaEditText.getText().toString(), new JCallback() {
                 @Override
-                public void onCallBack(String data) {
-                    mOutputTextView.setText(data);
-                    JSONObject json = null;
-                    try {
-                        json = new JSONObject(data);
-                        mEscEditText.setText(json.getString("secret"));
-                        mAddEditText.setText(json.getString("address"));
-                    } catch (JSONException e) {
-                        Log.v(TAG, e.getMessage());
-                    }
+                public void completion(JCCJson jccJson) {
+                    mEscEditText.setText(jccJson.getString("secret"));
+                    mAddEditText.setText(jccJson.getString("address"));
                 }
-            };
-            mJWalletManager.createWallet(mChaEditText.getText().toString(), callBackFunction);
+            });
         } else if (v == mImportButton) {
-            CallBackFunction callBackFunction = new CallBackFunction() {
-                @Override
-                public void onCallBack(String data) {
-                    Log.v(TAG, data);
-                    mOutputTextView.setText(data);
-                }
-            };
-            mJWalletManager.importSecret(mEscEditText.getText().toString(), mChaEditText.getText().toString(), callBackFunction);
+
         } else if (v == mIsAddressButton) {
-            CallBackFunction callBackFunction = new CallBackFunction() {
+            mJTWalletManager.isValidAddress(mAddEditText.getText().toString(), mChaEditText.getText().toString(), new JCallback() {
                 @Override
-                public void onCallBack(String data) {
-                    Log.v(TAG, data);
-                    mOutputTextView.setText(data);
+                public void completion(JCCJson jccJson) {
+                    mOutputTextView.setText(jccJson.getBoolean("isValid") + "");
                 }
-            };
-            mJWalletManager.isValidAddress(mAddEditText.getText().toString(), mChaEditText.getText().toString(), callBackFunction);
+            });
+
         } else if (v == mIsSecretButton) {
-            CallBackFunction callBackFunction = new CallBackFunction() {
+            mJTWalletManager.isValidSecret(mEscEditText.getText().toString(), mChaEditText.getText().toString(), new JCallback() {
                 @Override
-                public void onCallBack(String data) {
-                    Log.v(TAG, data);
-                    mOutputTextView.setText(data);
+                public void completion(JCCJson jccJson) {
+                    mOutputTextView.setText(jccJson.getBoolean("isValid") + "");
                 }
-            };
-            mJWalletManager.isValidSecret(mEscEditText.getText().toString(), mChaEditText.getText().toString(), callBackFunction);
+            });
+
         } else if (v == mSignButton) {
             Intent intent = new Intent(this, SignTxActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

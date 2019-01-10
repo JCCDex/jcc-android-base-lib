@@ -34,7 +34,7 @@
             var wallet;
             try {
                 data = JSON.parse(data);
-                wallet = Wallet.fromSecret(data.key, data.chain);
+                wallet = Wallet.fromSecret(data.secret, data.chain);
             } catch (e) {
                 wallet = null;
             }
@@ -46,7 +46,7 @@
             var valid;
             try {
                 data = JSON.parse(data);
-                valid = Wallet.isValidAddress(data.key, data.chain);
+                valid = Wallet.isValidAddress(data.address, data.chain);
             } catch (e) {
                 valid = false;
             }
@@ -57,7 +57,7 @@
             var valid;
             try {
                 data = JSON.parse(data);
-                valid = Wallet.isValidSecret(data.key, data.chain);
+                valid = Wallet.isValidSecret(data.secret, data.chain);
             } catch (e) {
                 valid = false;
             }

@@ -7,11 +7,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.android.jccdex.jwallet.JWalletManager;
-import com.github.lzyzsd.jsbridge.CallBackFunction;
+import com.android.jccdex.jwallet.JTWalletManager;
+import com.android.jccdex.jwallet.base.JCallback;
+import com.android.jccdex.jwallet.util.JCCJson;
 import com.google.gson.Gson;
 
-import java.math.BigDecimal;
+import org.json.JSONObject;
 
 public class SignTxActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -22,7 +23,7 @@ public class SignTxActivity extends AppCompatActivity implements View.OnClickLis
     private EditText mChaEditText;
     private Button mSignButton;
     private TextView mResTextView;
-    private JWalletManager mJWalletManager;
+    private JTWalletManager mJWalletManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,23 +39,23 @@ public class SignTxActivity extends AppCompatActivity implements View.OnClickLis
         mResTextView = findViewById(R.id.Res);
         mSignButton = findViewById(R.id.SignTx);
         mSignButton.setOnClickListener(this);
-        mJWalletManager = JWalletManager.getInstance(this);
+        mJWalletManager = JTWalletManager.getInstance(this);
     }
 
     @Override
     public void onClick(View v) {
         if (v == mSignButton) {
-            CallBackFunction callBack = new CallBackFunction() {
+
+            mJWalletManager.sign(getTransaction(), mSecEditText.getText().toString(), mChaEditText.getText().toString(), new JCallback() {
                 @Override
-                public void onCallBack(String data) {
-                    mResTextView.setText(data);
+                public void completion(JCCJson jccJson) {
+                    mResTextView.setText(jccJson.getString("signature"));
                 }
-            };
-            mJWalletManager.signTx(getTransaction(), mSecEditText.getText().toString(), mChaEditText.getText().toString(), callBack);
+            });
         }
     }
 
-    private String getTransaction() {
+    private JSONObject getTransaction() {
         Transaction transaction = new Transaction();
         transaction.setAccount(mAccEditText.getText().toString());
         transaction.setAmount(Integer.parseInt(mAmoEditText.getText().toString()));
@@ -63,6 +64,10 @@ public class SignTxActivity extends AppCompatActivity implements View.OnClickLis
         transaction.setFlags(0);
         transaction.setSequence(1);
         transaction.setTransactionType("Payment");
-        return new Gson().toJson(transaction);
+        try {
+            return new JSONObject(new Gson().toJson(transaction));
+        } catch (Throwable e) {
+            return null;
+        }
     }
 }
