@@ -2,135 +2,128 @@
 
 An interface for interacting with the blockchain wallet operation for android.
 
-[![](https://jitpack.io/v/JCCDex/jcc-android-base-lib.svg)](https://jitpack.io/#JCCDex/jcc-android-base-lib)
+[![JitPack](https://jitpack.io/v/JCCDex/jcc-android-base-lib.svg)](https://jitpack.io/#JCCDex/jcc-android-base-lib)
 
 ## Usage
 
 ## Installation
 
 Step 1. Add it in your root build.gradle at the end of repositories:
+
 ```groovy
 repositories {
-    ...
     maven { url 'https://jitpack.io' }
 }
 ```
+
 Step 2. Add the dependency
+
 ```groovy
 dependencies {
-    implementation 'com.github.JCCDex:jcc-android-base-lib:0.0.1'
+    implementation 'com.github.JCCDex:jcc-android-base-lib:0.1.0'
 }
 ```
 
-## API of JWalletManager
+## API of JTWalletManager
 
 Interface for interacting with the node sdk of jingtum & jingtum alliance chains. Now supports [SWTC](https://state.jingtum.com/#!/) & [BIZAIN](https://bizain.net/) chain.
 
-Create JWalletManager with Context in your activity.
+Create JTWalletManager with Context in your activity.
+
 ```java
-private JWalletManager mJWalletManager;
+private JTWalletManager mJTWalletManager;
 
 @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        mJWalletManager = JWalletManager.getInstance(this);
-        ...
-    }
+protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);
+    mJTWalletManager = JTWalletManager.getInstance(this);
+}
 ```
 
 ### createWallet
-param
 
-  chain - default with swt.
-
-  callBack - `data` is null when create wallet unseccusfully.
 ```java
-com.github.lzyzsd.jsbridge.CallBackFunction callBackFunction = new CallBackFunction() {
-                @Override
-                public void onCallBack(String data) {
-                    ...
-                }
-            };
-// mJWalletManager.mJWalletManager(JWalletManager.BIZAIN_CHAIN, callBackFunction);
-mJWalletManager.mJWalletManager(JWalletManager.SWTC_CHAIN, callBackFunction);
+String chain = JTWalletManager.SWTC_CHAIN;
+// String chain = JTWalletManager.BIZAIN_CHAIN;
+
+mJTWalletManager.createWallet(chain, new JCallback() {
+    @Override
+    public void completion(JCCJson jccJson) {
+        String secret = jccJson.getString("secret");
+        String address = jccJson.getString("address");
+        // the secret and address is not null if create wallet successfully
+    }
+});
 ```
 
 ### importSecret
-param
 
-  secret - 
-
-  chain - default with swt.
-
-  callBack - `data` is null when import wallet unseccusfully.
 ```java
-com.github.lzyzsd.jsbridge.CallBackFunction callBackFunction = new CallBackFunction() {
-                @Override
-                public void onCallBack(String data) {
-                    ...
-                }
-            };
-// mJWalletManager.importSecret("s...", JWalletManager.BIZAIN_CHAIN, callBackFunction);
-mJWalletManager.importSecret("s...", JWalletManager.SWTC_CHAIN, callBackFunction);
+String secret = "";
+
+String chain = JTWalletManager.SWTC_CHAIN;
+// String chain = JTWalletManager.BIZAIN_CHAIN;
+
+mJTWalletManager.importSecret(secret, chain, new JCallback() {
+    @Override
+    public void completion(JCCJson jccJson) {
+        String secret = jccJson.getString("secret");
+        String address = jccJson.getString("address");
+        // the secret and address is not null if import secret successfully
+    }
+});
 ```
+
 ### isValidAddress
-param
 
-  address - 
-
-  chain - default with swt.
-
-  callBack - `data` is true when the address is valid,otherwise is false.
 ```java
-com.github.lzyzsd.jsbridge.CallBackFunction callBackFunction = new CallBackFunction() {
-                @Override
-                public void onCallBack(String data) {
-                    ...
-                }
-            };
-// mJWalletManager.isValidAddress("b...", JWalletManager.BIZAIN_CHAIN, callBackFunction);
-mJWalletManager.isValidAddress("j...", JWalletManager.SWTC_CHAIN, callBackFunction);
+String address = "";
+
+String chain = JTWalletManager.SWTC_CHAIN;
+// String chain = JTWalletManager.BIZAIN_CHAIN;
+
+mJTWalletManager.isValidAddress(address, chain, new JCallback() {
+    @Override
+    public void completion(JCCJson jccJson) {
+        Boolean isValid = jccJson.getBoolean("isValid");
+        // the isValid is true if the address is valid
+    }
+});
 ```
 
 ### isValidSecret
-param
 
-  secret - 
-
-  chain - default with swt.
-
-  callBack - `data` is true when the secret is valid,otherwise is false.
 ```java
-com.github.lzyzsd.jsbridge.CallBackFunction callBackFunction = new CallBackFunction() {
-                @Override
-                public void onCallBack(String data) {
-                    ...
-                }
-            };
-// mJWalletManager.isValidSecret("s...", JWalletManager.BIZAIN_CHAIN, callBackFunction);
-mJWalletManager.isValidSecret("s...", JWalletManager.SWTC_CHAIN, callBackFunction);
+String secret = "";
+
+String chain = JTWalletManager.SWTC_CHAIN;
+// String chain = JTWalletManager.BIZAIN_CHAIN;
+
+mJTWalletManager.isValidSecret(secret, chain, new JCallback() {
+    @Override
+    public void completion(JCCJson jccJson) {
+        Boolean isValid = jccJson.getBoolean("isValid");
+        // the isValid is true if the secret is valid
+    }
+});
 ```
 
-### signTx
-param
+### sign
 
-  transaction - JsonString
-
-  secret - 
-
-  chain - default with swt.
-
-  callBack - `data` is true when secret is valid,otherwise is false.
 ```java
-com.github.lzyzsd.jsbridge.CallBackFunction callBackFunction = new CallBackFunction() {
-                @Override
-                public void onCallBack(String data) {
-                    ...
-                }
-            };
-// mJWalletManager.signTx("{xxx}", "s...", JWalletManager.BIZAIN_CHAIN, callBackFunction);
-mJWalletManager.signTx("{xxx}", "s...", JWalletManager.SWTC_CHAIN, callBackFunction);
-```
+JSONObject transaction = null;
 
+String secret = "";
+
+String chain = JTWalletManager.SWTC_CHAIN;
+// String chain = JTWalletManager.BIZAIN_CHAIN;
+
+mJTWalletManager.sign(transaction, secret, chain, new JCallback() {
+    @Override
+    public void completion(JCCJson jccJson) {
+        String signature = jccJson.getString("signature");
+        // the signature is not null if sign successfully
+    }
+});
+```
