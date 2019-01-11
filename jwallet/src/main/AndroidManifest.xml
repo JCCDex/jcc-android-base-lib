@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.android.jccdex.jwallet">
+    <application>
+        <activity android:name="com.android.jccdex.jwallet.MainActivity">
+
+        </activity>
+    </application>
 </manifest>

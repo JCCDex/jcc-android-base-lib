@@ -1,0 +1,18 @@
+package com.android.jccdex.jwallet;
+
+import android.app.Activity;
+import android.os.Bundle;
+
+public class MainActivity extends Activity {
+    private JTWalletManager mJTWalletManager;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mJTWalletManager = JTWalletManager.getInstance(this);
+    }
+
+    public JTWalletManager getJTWalletManager() {
+        return mJTWalletManager;
+    }
+}
