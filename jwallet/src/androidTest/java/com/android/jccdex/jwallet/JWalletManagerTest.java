@@ -41,7 +41,7 @@ public class JWalletManagerTest {
 
     @Test
     public void testInstance() {
-        Assert.assertEquals(manager, mActivityRule.getActivity().getJTWalletManager());
+        Assert.assertEquals(manager, mActivityRule.getActivity().getInstance());
     }
 
     @Test

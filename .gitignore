@@ -67,3 +67,5 @@ fastlane/readme.md
 .project
 .settings
 .classpath
+fastlane/README.md
+.vscode
