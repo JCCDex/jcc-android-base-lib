@@ -3,6 +3,8 @@
 An interface for interacting with the blockchain wallet operation for android.
 
 [![JitPack](https://jitpack.io/v/JCCDex/jcc-android-base-lib.svg)](https://jitpack.io/#JCCDex/jcc-android-base-lib)
+[![Build Status](https://travis-ci.com/JCCDex/jcc-android-base-lib.svg?branch=master)](https://travis-ci.com/JCCDex/jcc-android-base-lib)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
 ## Usage
 
