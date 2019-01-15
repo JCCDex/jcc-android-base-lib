@@ -1,6 +1,6 @@
-package com.android.jccdex.jwallet;
+package com.android.jccdex.app;
 
-import com.android.jccdex.jwallet.base.JCallback;
+import com.android.jccdex.app.base.JCallback;
 
 import org.json.JSONObject;
 

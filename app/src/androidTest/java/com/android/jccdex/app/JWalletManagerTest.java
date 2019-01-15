@@ -1,9 +1,9 @@
-package com.android.jccdex.jwallet;
+package com.android.jccdex.app;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.android.jccdex.jwallet.base.JCallback;
-import com.android.jccdex.jwallet.util.JCCJson;
+import com.android.jccdex.app.base.JCallback;
+import com.android.jccdex.app.util.JCCJson;
 
 import org.json.JSONObject;
 import org.junit.After;

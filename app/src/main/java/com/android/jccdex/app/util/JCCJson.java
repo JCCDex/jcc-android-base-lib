@@ -1,4 +1,4 @@
-package com.android.jccdex.jwallet.util;
+package com.android.jccdex.app.util;
 
 import org.json.JSONObject;
 

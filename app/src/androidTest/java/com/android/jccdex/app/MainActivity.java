@@ -1,4 +1,4 @@
-package com.android.jccdex.jwallet;
+package com.android.jccdex.app;
 
 import android.app.Activity;
 import android.os.Bundle;
