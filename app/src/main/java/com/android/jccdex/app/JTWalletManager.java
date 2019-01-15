@@ -1,9 +1,9 @@
-package com.android.jccdex.jwallet;
+package com.android.jccdex.app;
 
 import android.content.Context;
 
-import com.android.jccdex.jwallet.base.JCallback;
-import com.android.jccdex.jwallet.util.JCCJson;
+import com.android.jccdex.app.base.JCallback;
+import com.android.jccdex.app.util.JCCJson;
 import com.github.lzyzsd.jsbridge.BridgeWebView;
 import com.github.lzyzsd.jsbridge.CallBackFunction;
 
