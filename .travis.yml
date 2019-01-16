@@ -30,8 +30,8 @@ env:
     - ANDROID_API_LEVEL: 28
     - ANDROID_BUILD_TOOLS_VERSION: 28.0.3
     - ANDROID_EMU_API_LEVEL: 21
-    # - ANDROID_EMU_API_LEVEL: 22 com.android.ddmlib.InstallException: Failed to finalize session : INSTALL_FAILED_DEXOPT: Package couldn't be installed in /data/app/org.osmdroid-2: scanPackageLI
     - ANDROID_ABI: armeabi-v7a
     - ADB_INSTALL_TIMEOUT: 20 # minutes (2 minutes by default)
     - QEMU_AUDIO_DRV: none
-    - secure: KwQiMBsVvYe57qWjA4e7oxlAII4Jd/xK/O4pAh5B89RSgimV2SzXgxHa5GkG2DSKpLdxUsgJWLyiAKviHS+t/B/a3POF7MY1qOg3bcXLK22hWEnvEjkVvHXbpxK3wwJNr6vlhgJGuWU5Elx6z+1xz2w4HVBV2Yv/RoKG3YPfbWSH2RDAs8S7TXSNDBtPD0Khr2wMl0QuluDW4KuqRVefqw8egV4XrYn21UTL6I/Ie8tdaebe+afwaCSxML27XpRAHoC3dCavExqhvJNOnaIspN1pslWJyMjXc8SCAetvH5m/2HrvxHDlFq96f4kTGatjP2d9jKVrvfadU+tjY6L/0/Qd/EvMNTNnmegc7H9GGmb2AlDTB1kIJEkrMljFT5dJn1TpKmN/EBvHx8Pl+EIGObrHPfeFOObaz2pRsIaf1lGvT66+/PAT4AJhq9CxmYxx4GLV7/vCDZwKEeVpn2GE6n6hq31ZQdD8TSt8jMmyWxpD6jC7nkK8k9GA5W4NbuJZiNJnJ+aP+PY4LpuG1TegpGzbUKG2w0I10taENwa3w0r9pzS2Tnl3T9SNqRHVMFZD3iBl3+zlZ9pwtrTMp87mfiANfq9CailHeCcEm2olqT2VlpCbIzE352/XRebm0z65I4Mh7f2LJh8yPUoUfaOGEGPpUyMoZS3M5Ocx7/YDizw=
+
+# android abi tip: https://github.com/osmdroid/osmdroid/blob/master/.travis.yml
