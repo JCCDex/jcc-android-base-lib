@@ -1,8 +1,0 @@
-default_platform(:android)
-
-platform :android do
-  lane :test do
-      Dir.chdir("..")
-      Action.sh("./gradlew clean build connectedCheck assembleDebug -PdisablePreDex")
-  end
-end
