@@ -61,6 +61,7 @@ public class JWalletManagerTest {
                 });
             }
         });
+        manager.createWallet(JTWalletManager.SWTC_CHAIN, null);
         try {
             sigal.await();
         } catch (InterruptedException e) {
@@ -135,6 +136,7 @@ public class JWalletManagerTest {
                 sigal.countDown();
             }
         });
+        manager.importSecret(SWTC_SECRET, JTWalletManager.SWTC_CHAIN, null);
         try {
             sigal.await();
         } catch (InterruptedException e) {
@@ -191,6 +193,7 @@ public class JWalletManagerTest {
                 sigal.countDown();
             }
         });
+        manager.isValidAddress(SWTC_ADDRESS, JTWalletManager.SWTC_CHAIN, null);
         try {
             sigal.await();
         } catch (InterruptedException e) {
@@ -243,6 +246,7 @@ public class JWalletManagerTest {
                 sigal.countDown();
             }
         });
+        manager.isValidSecret(SWTC_SECRET, JTWalletManager.SWTC_CHAIN, null);
         try {
             sigal.await();
         } catch (InterruptedException e) {
@@ -304,6 +308,7 @@ public class JWalletManagerTest {
                     sigal.countDown();
                 }
             });
+            manager.sign(null, secret, JTWalletManager.SWTC_CHAIN, null);
             sigal.await();
         } catch (Throwable e) {
 
@@ -343,5 +348,21 @@ public class JWalletManagerTest {
         } catch (Throwable e) {
 
         }
+    }
+
+    @Test
+    public void testJCCJson() throws Throwable {
+        JCCJson jccJson = new JCCJson(null);
+        Assert.assertEquals("", jccJson.toString());
+        Assert.assertEquals(false, jccJson.getBoolean(""));
+        jccJson.put(null, "aaa");
+        jccJson.put(null, true);
+        jccJson.put(null, new JSONObject());
+
+        JCCJson json = new JCCJson();
+        json.put(null, "aaa");
+        json.put(null, true);
+        json.put(null, new JSONObject());
+        Assert.assertEquals(false, json.getBoolean("aaa"));
     }
 }
