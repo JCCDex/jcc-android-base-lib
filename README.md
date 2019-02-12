@@ -130,3 +130,5 @@ mJTWalletManager.sign(transaction, secret, chain, new JCallback() {
     }
 });
 ```
+
+For more structure of transaction data, see [jcc_exchange](https://github.com/JCCDex/jcc_exchange/blob/master/src/tx.js).
