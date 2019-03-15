@@ -27,9 +27,12 @@ public class JTWalletManager implements JWallet {
     private JTWalletManager() {
     }
 
-    public static JTWalletManager getInstance(Context context) {
+    public void init(Context context) {
         mWebview = new BridgeWebView(context);
         mWebview.loadUrl(JINGTUM_JS);
+    }
+
+    public static JTWalletManager getInstance() {
         return instance;
     }
 

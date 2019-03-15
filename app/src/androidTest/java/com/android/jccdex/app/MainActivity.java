@@ -10,8 +10,9 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mJTWalletManager = JTWalletManager.getInstance(this);
-        instance = JTWalletManager.getInstance(this);
+        mJTWalletManager = JTWalletManager.getInstance();
+        instance = JTWalletManager.getInstance();
+        instance.init(this);
     }
 
     public JTWalletManager getJTWalletManager() {
