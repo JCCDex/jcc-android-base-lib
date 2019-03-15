@@ -13,7 +13,7 @@ android:
       - 'android-sdk-license-.+'
       - 'google-gdk-license-.+'
 before_install:
-  - yes | sdkmanager "platforms;android-28"
+  - yes | sdkmanager "platforms;android-26"
 before_script:
   - android list targets
   - sdkmanager --list
