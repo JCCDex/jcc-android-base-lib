@@ -23,7 +23,7 @@ Step 2. Add the dependency
 
 ```groovy
 dependencies {
-    implementation 'com.github.JCCDex:jcc-android-base-lib:0.1.0'
+    implementation 'com.github.JCCDex:jcc-android-base-lib:0.1.3'
 }
 ```
 
@@ -40,7 +40,8 @@ private JTWalletManager mJTWalletManager;
 protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
-    mJTWalletManager = JTWalletManager.getInstance(this);
+    mJTWalletManager = JTWalletManager.getInstance();
+    mJTWalletManager.init(this);
 }
 ```
 
