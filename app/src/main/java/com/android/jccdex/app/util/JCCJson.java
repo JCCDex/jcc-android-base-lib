@@ -26,8 +26,9 @@ public class JCCJson {
         }
     }
 
+    @SuppressWarnings("EmptyCatchBlock")
     public void put(String name, Boolean value) {
-        if(jsonObject != null) {
+        if (jsonObject != null) {
             try {
                 jsonObject.put(name, value);
             } catch (Throwable e) {
@@ -36,6 +37,7 @@ public class JCCJson {
         }
     }
 
+    @SuppressWarnings("EmptyCatchBlock")
     public void put(String name, String value) {
         if (jsonObject != null) {
             try {
@@ -46,6 +48,7 @@ public class JCCJson {
         }
     }
 
+    @SuppressWarnings("EmptyCatchBlock")
     public void put(String name, JSONObject value) {
         if (jsonObject != null) {
             try {
@@ -71,7 +74,7 @@ public class JCCJson {
     }
 
     public Boolean getBoolean(String name) {
-        Boolean value;
+        boolean value;
         if (jsonObject != null) {
             try {
                 value = jsonObject.getBoolean(name);

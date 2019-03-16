@@ -1,4 +1,5 @@
 package com.android.jccdex.app;
+
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
@@ -62,7 +63,6 @@ public class JingtumWalletTest {
                 });
             }
         });
-        manager.createWallet(JingtumWallet.SWTC_CHAIN, null);
         try {
             sigal.await();
         } catch (InterruptedException e) {
@@ -137,7 +137,6 @@ public class JingtumWalletTest {
                 sigal.countDown();
             }
         });
-        manager.importSecret(SWTC_SECRET, JingtumWallet.SWTC_CHAIN, null);
         try {
             sigal.await();
         } catch (InterruptedException e) {
@@ -194,7 +193,6 @@ public class JingtumWalletTest {
                 sigal.countDown();
             }
         });
-        manager.isValidAddress(SWTC_ADDRESS, JingtumWallet.SWTC_CHAIN, null);
         try {
             sigal.await();
         } catch (InterruptedException e) {
@@ -247,7 +245,6 @@ public class JingtumWalletTest {
                 sigal.countDown();
             }
         });
-        manager.isValidSecret(SWTC_SECRET, JingtumWallet.SWTC_CHAIN, null);
         try {
             sigal.await();
         } catch (InterruptedException e) {
@@ -309,7 +306,6 @@ public class JingtumWalletTest {
                     sigal.countDown();
                 }
             });
-            manager.sign(null, secret, JingtumWallet.SWTC_CHAIN, null);
             sigal.await();
         } catch (Throwable e) {
 

@@ -79,8 +79,8 @@ public class EthereumWalletTest {
         manager.importSecret("aaaaa", new JCallback() {
             @Override
             public void completion(JCCJson json) {
-                Assert.assertNotNull(json.getString("address"));
-                Assert.assertNotNull(json.getString("secret"));
+                Assert.assertNull(json.getString("address"));
+                Assert.assertNull(json.getString("secret"));
                 sigal.countDown();
             }
         });
@@ -105,7 +105,7 @@ public class EthereumWalletTest {
             }
         });
 
-        manager.isValidSecret(SECRET + "aaaaa", new JCallback() {
+        manager.isValidSecret("aaaaa", new JCallback() {
             @Override
             public void completion(JCCJson json) {
                 Boolean isValid = json.getBoolean("isValid");
@@ -193,7 +193,7 @@ public class EthereumWalletTest {
         manager.gasPrice(new JCallback() {
             @Override
             public void completion(JCCJson json) {
-                String gas = json.getString("gas");
+                String gas = json.getString("gasPrice");
                 Assert.assertNotNull(gas);
                 sigal.countDown();
             }
@@ -276,20 +276,5 @@ public class EthereumWalletTest {
         } catch (Throwable e) {
 
         }
-    }
-
-    @Test
-    public void testCallbackIsnull() {
-        manager.createWallet(null);
-        manager.importSecret("", null);
-        manager.importWords("", null);
-        manager.isValidAddress("", null);
-        manager.isValidSecret("", null);
-        manager.sendSignedTransaction("", null);
-        manager.sign(null, "", null);
-        manager.toIban(ADDRESS, null);
-        manager.fromIban(IBAN, null);
-        manager.gasPrice(null);
-        manager.getBalance(ADDRESS, null);
     }
 }

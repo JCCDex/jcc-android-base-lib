@@ -1,6 +1,7 @@
 package com.android.jccdex.app.ethereum;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 
 import com.android.jccdex.app.base.JCallback;
 import com.android.jccdex.app.util.JCCJson;
@@ -34,100 +35,86 @@ public class EthereumWallet implements IEthereum {
     }
 
     @Override
-    public void createWallet(final JCallback callback) {
+    public void createWallet(@NonNull final JCallback callback) {
         mWebview.callHandler("createEtherumWallet", null, new CallBackFunction() {
             @Override
             public void onCallBack(String data) {
                 JCCJson jccJson = new JCCJson(data);
-                if (callback != null) {
-                    callback.completion(jccJson);
-                }
+                callback.completion(jccJson);
             }
         });
     }
 
     @Override
-    public void isValidAddress(String address, final JCallback callback) {
+    public void isValidAddress(String address, @NonNull final JCallback callback) {
         mWebview.callHandler("isValidEthereumAddress", address, new CallBackFunction() {
             @Override
             public void onCallBack(String data) {
                 JCCJson jccJson = new JCCJson();
-                jccJson.put("isValid", data == "true");
-                if (callback != null) {
-                    callback.completion(jccJson);
-                }
+                jccJson.put("isValid", data.equals("true"));
+                callback.completion(jccJson);
             }
         });
     }
 
     @Override
-    public void isValidSecret(String secret, final JCallback callback) {
+    public void isValidSecret(String secret, @NonNull final JCallback callback) {
         mWebview.callHandler("isValidEthereumSecret", secret, new CallBackFunction() {
             @Override
             public void onCallBack(String data) {
                 JCCJson jccJson = new JCCJson();
-                jccJson.put("isValid", data == "true");
-                if (callback != null) {
-                    callback.completion(jccJson);
-                }
+                jccJson.put("isValid", data.equals("true"));
+                callback.completion(jccJson);
             }
         });
     }
 
     @Override
-    public void importSecret(String secret, final JCallback callback) {
+    public void importSecret(String secret, @NonNull final JCallback callback) {
         mWebview.callHandler("importEthereumSecret", secret, new CallBackFunction() {
             @Override
             public void onCallBack(String data) {
                 JCCJson jccJson = new JCCJson(data);
-                if (callback != null) {
-                    callback.completion(jccJson);
-                }
+                callback.completion(jccJson);
             }
         });
     }
 
     @Override
-    public void importWords(String words, final JCallback callback) {
+    public void importWords(String words, @NonNull final JCallback callback) {
         mWebview.callHandler("importEthereumWords", words, new CallBackFunction() {
             @Override
             public void onCallBack(String data) {
                 JCCJson jccJson = new JCCJson(data);
-                if (callback != null) {
-                    callback.completion(jccJson);
-                }
+                callback.completion(jccJson);
             }
         });
     }
 
     @Override
-    public void toIban(String address, final JCallback callback) {
+    public void toIban(String address, @NonNull final JCallback callback) {
         mWebview.callHandler("toEtherumIban", address, new CallBackFunction() {
             @Override
             public void onCallBack(String data) {
                 JCCJson jccJson = new JCCJson(data);
-                if (callback != null) {
-                    callback.completion(jccJson);
-                }
+                callback.completion(jccJson);
             }
         });
     }
 
     @Override
-    public void fromIban(String iban, final JCallback callback) {
+    public void fromIban(String iban, @NonNull final JCallback callback) {
         mWebview.callHandler("fromEthereumIban", iban, new CallBackFunction() {
             @Override
             public void onCallBack(String data) {
                 JCCJson jccJson = new JCCJson(data);
-                if (callback != null) {
-                    callback.completion(jccJson);
-                }
+                callback.completion(jccJson);
             }
         });
     }
 
     @Override
-    public void sign(JSONObject transaction, String secret, final JCallback callback) {
+    public void sign(JSONObject transaction, String secret, @NonNull final JCallback callback) {
         JCCJson jccJson = new JCCJson();
         jccJson.put("transaction", transaction);
         jccJson.put("secret", secret);
@@ -135,48 +122,40 @@ public class EthereumWallet implements IEthereum {
             @Override
             public void onCallBack(String data) {
                 JCCJson json = new JCCJson(data);
-                if (callback != null) {
-                    callback.completion(json);
-                }
+                callback.completion(json);
             }
         });
     }
 
     @Override
-    public void sendSignedTransaction(String signedTransaction, final JCallback callback) {
+    public void sendSignedTransaction(String signedTransaction, @NonNull final JCallback callback) {
         mWebview.callHandler("sendEthereumSignedTransaction", signedTransaction, new CallBackFunction() {
             @Override
             public void onCallBack(String data) {
                 JCCJson json = new JCCJson(data);
-                if (callback != null) {
-                    callback.completion(json);
-                }
+                callback.completion(json);
             }
         });
     }
 
     @Override
-    public void gasPrice(final JCallback callback) {
+    public void gasPrice(@NonNull final JCallback callback) {
         mWebview.callHandler("ethereumGasPrice", null, new CallBackFunction() {
             @Override
             public void onCallBack(String data) {
                 JCCJson json = new JCCJson(data);
-                if (callback != null) {
-                    callback.completion(json);
-                }
+                callback.completion(json);
             }
         });
     }
 
     @Override
-    public void getBalance(String address, final JCallback callback) {
+    public void getBalance(String address, @NonNull final JCallback callback) {
         mWebview.callHandler("ethereumBalance", address, new CallBackFunction() {
             @Override
             public void onCallBack(String data) {
                 JCCJson json = new JCCJson(data);
-                if (callback != null) {
-                    callback.completion(json);
-                }
+                callback.completion(json);
             }
         });
     }

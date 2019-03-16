@@ -1,6 +1,7 @@
 package com.android.jccdex.app.jingtum;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 
 import com.android.jccdex.app.base.JCallback;
 import com.android.jccdex.app.util.JCCJson;
@@ -30,20 +31,18 @@ public class JingtumWallet implements IJingtum {
     }
 
     @Override
-    public void createWallet(String chain, final JCallback callback) {
+    public void createWallet(String chain, @NonNull final JCallback callback) {
         mWebview.callHandler("createJingtumWallet", chain, new CallBackFunction() {
             @Override
             public void onCallBack(String data) {
                 JCCJson jccJson = new JCCJson(data);
-                if (callback != null) {
-                    callback.completion(jccJson);
-                }
+                callback.completion(jccJson);
             }
         });
     }
 
     @Override
-    public void importSecret(String secret, String chain, final JCallback callback) {
+    public void importSecret(String secret, String chain, @NonNull final JCallback callback) {
         JCCJson jccJson = new JCCJson();
         jccJson.put("secret", secret);
         jccJson.put("chain", chain);
@@ -51,15 +50,13 @@ public class JingtumWallet implements IJingtum {
             @Override
             public void onCallBack(String data) {
                 JCCJson jccJson = new JCCJson(data);
-                if (callback != null) {
-                    callback.completion(jccJson);
-                }
+                callback.completion(jccJson);
             }
         });
     }
 
     @Override
-    public void isValidAddress(String address, String chain, final JCallback callback) {
+    public void isValidAddress(String address, String chain, @NonNull final JCallback callback) {
         JCCJson jccJson = new JCCJson();
         jccJson.put("address", address);
         jccJson.put("chain", chain);
@@ -67,16 +64,14 @@ public class JingtumWallet implements IJingtum {
             @Override
             public void onCallBack(String data) {
                 JCCJson jccJson = new JCCJson();
-                jccJson.put("isValid", data == "true");
-                if (callback != null) {
-                    callback.completion(jccJson);
-                }
+                jccJson.put("isValid", data.equals("true"));
+                callback.completion(jccJson);
             }
         });
     }
 
     @Override
-    public void isValidSecret(String secret, String chain, final JCallback callback) {
+    public void isValidSecret(String secret, String chain, @NonNull final JCallback callback) {
         JCCJson jccJson = new JCCJson();
         jccJson.put("secret", secret);
         jccJson.put("chain", chain);
@@ -84,16 +79,14 @@ public class JingtumWallet implements IJingtum {
             @Override
             public void onCallBack(String data) {
                 JCCJson jccJson = new JCCJson();
-                jccJson.put("isValid", data == "true");
-                if (callback != null) {
-                    callback.completion(jccJson);
-                }
+                jccJson.put("isValid", data.equals("true"));
+                callback.completion(jccJson);
             }
         });
     }
 
     @Override
-    public void sign(JSONObject transaction, String secret, String chain, final JCallback callback) {
+    public void sign(JSONObject transaction, String secret, String chain, @NonNull final JCallback callback) {
         JCCJson jccJson = new JCCJson();
         jccJson.put("transaction", transaction);
         jccJson.put("secret", secret);
@@ -101,13 +94,11 @@ public class JingtumWallet implements IJingtum {
         mWebview.callHandler("jingtumSignTx", jccJson.toString(), new CallBackFunction() {
             @Override
             public void onCallBack(String data) {
-                JCCJson  jccJson = new JCCJson();
-                if (data != "null") {
+                JCCJson jccJson = new JCCJson();
+                if (!data.equals("null")) {
                     jccJson.put("signature", data);
                 }
-                if (callback != null) {
-                    callback.completion(jccJson);
-                }
+                callback.completion(jccJson);
             }
         });
     }
