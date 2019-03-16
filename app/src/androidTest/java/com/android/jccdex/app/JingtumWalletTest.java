@@ -17,7 +17,7 @@ import org.junit.runner.RunWith;
 import java.util.concurrent.CountDownLatch;
 
 @RunWith(AndroidJUnit4.class)
-public class JWalletManagerTest {
+public class JingtumWalletTest {
 
     private JingtumWallet manager;
 

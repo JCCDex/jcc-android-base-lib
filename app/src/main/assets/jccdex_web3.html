@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body>
+</body>
+<script src="polyfill.min.js"></script>
+<script src="Buffer.min.js"></script>
+<script src="web3.min.js"></script>
+<script src="mnemonic.min.js"></script>
+<script>
+    function connectWebViewJavascriptBridge(callback) {
+        if (window.WebViewJavascriptBridge) {
+            callback(WebViewJavascriptBridge)
+        } else {
+            document.addEventListener(
+                'WebViewJavascriptBridgeReady',
+                function () {
+                    callback(WebViewJavascriptBridge)
+                },
+                false
+            );
+        }
+    }
+
+    var filterOx = function (str) {
+        if (typeof str !== 'string') {
+            return str;
+        }
+        if (str.indexOf("0x") === 0) {
+            return str.substring(2);
+        }
+        return str;
+    };
+
+    var isValidSecret = function (secret) {
+        secret = filterOx(secret);
+        return typeof secret === 'string' && ethereumjsUtil.isValidPrivate(Buffer.from(secret, 'hex'));
+    }
+
+    connectWebViewJavascriptBridge(function (bridge) {
+
+        bridge.registerHandler("initEthereum", function (node, responseCallback) {
+            if (typeof web3 !== 'undefined' && web3.currentProvider) {
+                web3 = new Web3(web3.currentProvider);
+            } else {
+                web3 = new Web3(new Web3.providers.HttpProvider(node));
+            }
+            responseCallback();
+        });
+
+        bridge.registerHandler("createEtherumWallet", function (data, responseCallback) {
+            var mnemonic = bip39.generateMnemonic();
+            var seed = bip39.mnemonicToSeed(mnemonic);
+            var hdWallet = hdkey.fromMasterSeed(seed);
+            var key1 = hdWallet.derivePath("m/44'/60'/0'/0/0");
+            var wallet = {
+                secret: key1.getWallet().getPrivateKeyString(),
+                address: key1.getWallet().getAddressString(),
+                words: mnemonic
+            }
+            responseCallback(wallet);
+        });
+
+        bridge.registerHandler("isValidEthereumAddress", function (address, responseCallback) {
+            var valid = ethereumjsUtil.isValidAddress(address);
+            responseCallback(valid);
+        })
+
+        bridge.registerHandler("isValidEthereumSecret", function (secret, responseCallback) {
+            var valid = isValidSecret(secret);
+            responseCallback(valid);
+        })
+
+        bridge.registerHandler("importEthereumSecret", function (secret, responseCallback) {
+            secret = filterOx(secret);
+            var wallet;
+            if (!isValidSecret(secret)) {
+                wallet = {};
+            } else {
+                try {
+                    var buffer = ethereumjsUtil.privateToAddress(Buffer.from(secret, 'hex'));
+                    var decodeAddress = ethereumjsUtil.bufferToHex(buffer);
+                    wallet = {
+                        secret: '0x' + secret,
+                        address: decodeAddress
+                    }
+                } catch (error) {
+                    wallet = {};
+                }
+            }
+            responseCallback(wallet);
+        })
+
+        bridge.registerHandler("importEthereumWords", function (words, responseCallback) {
+            var seed = bip39.mnemonicToSeed(words);
+            var hdWallet = hdkey.fromMasterSeed(seed);
+            var key1 = hdWallet.derivePath("m/44'/60'/0'/0/0");
+            var wallet = {
+                secret: key1.getWallet().getPrivateKeyString(),
+                address: key1.getWallet().getAddressString()
+            }
+            responseCallback(wallet);
+        })
+
+        bridge.registerHandler("toEtherumIban", function (address, responseCallback) {
+            var iban = web3.eth.Iban.toIban(address);
+            responseCallback(iban);
+        })
+
+        bridge.registerHandler("fromEthereumIban", function (iban, responseCallback) {
+            var address = web3.eth.Iban.toAddress(iban);
+            responseCallback(address);
+        })
+
+        bridge.registerHandler("signEthereumTransaction", function (data, responseCallback) {
+            var obj = {};
+            try {
+                data = JSON.parse(data);
+                var transaction = data.transaction;
+                var secret = data.secret;
+                if (!transaction.abi) {
+                    web3.eth.accounts.signTransaction(transaction, secret).then(function (res) {
+                        obj.rawTransaction = res.rawTransaction
+                        responseCallback(obj);
+                    }).catch(function (error) {
+                        obj.errorMessage = error.message;
+                        responseCallback(obj);
+                    })
+                }
+            } catch (error) {
+                obj.errorMessage = error.message
+                responseCallback(obj);
+            }
+        })
+
+        bridge.registerHandler("sendEthereumSignedTransaction", function (rawTransaction, responseCallback) {
+            var obj = {};
+            web3.eth.sendSignedTransaction(rawTransaction)
+                .on('receipt', function (receipt) {
+                    obj.hash = receipt;
+                    responseCallback(obj);
+                })
+                .on('error', function (error) {
+                    obj.errorMessage = error.message;
+                    responseCallback(obj);
+                });
+        })
+
+        bridge.registerHandler("ethereumGasPrice", function (data, responseCallback) {
+            web3.eth.getGasPrice(function (error, gas) {
+                var obj = {}
+                if (error) {
+                    obj.errorMessage = error.message;
+                } else {
+                    obj.gas = gas.toString(10);
+                }
+                responseCallback(obj);
+            })
+        })
+
+        bridge.registerHandler("ethereumBalance", function (address, responseCallback) {
+            web3.eth.getBalance(address, function (error, balance) {
+                var obj = {}
+                if (error) {
+                    obj.errorMessage = error.message;
+                } else {
+                    obj.balance = balance.toString(10);
+                }
+                responseCallback(obj);
+            })
+        })
+    })
+</script>
+
+</html>

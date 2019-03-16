@@ -13,7 +13,7 @@ public class JingtumWallet implements IJingtum {
     public static final String SWTC_CHAIN = "swt";
     public static final String BIZAIN_CHAIN = "bwt";
 
-    private static final String JINGTUM_JS = "file:///android_asset/index.html";
+    private static final String JINGTUM_JS = "file:///android_asset/jccdex_jingtum.html";
     private static BridgeWebView mWebview;
     private static JingtumWallet instance = new JingtumWallet();
 
