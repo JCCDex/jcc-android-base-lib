@@ -3,6 +3,7 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.android.jccdex.app.base.JCallback;
+import com.android.jccdex.app.jingtum.JingtumWallet;
 import com.android.jccdex.app.util.JCCJson;
 
 import org.json.JSONObject;
@@ -18,7 +19,7 @@ import java.util.concurrent.CountDownLatch;
 @RunWith(AndroidJUnit4.class)
 public class JWalletManagerTest {
 
-    private JTWalletManager manager;
+    private JingtumWallet manager;
 
     private final static String BIZAIN_SECRET = "ssySqG4BhxpngV2FjAe1SJYFD4dcm";
     private final static String BIZAIN_ADDRESS = "bMAy4Pu8CSf5apR44HbYyLFKeC9Dbau16Q";
@@ -47,12 +48,12 @@ public class JWalletManagerTest {
     @Test
     public void testCreateSwtcWallet() {
         final CountDownLatch sigal = new CountDownLatch(1);
-        manager.createWallet(JTWalletManager.SWTC_CHAIN, new JCallback() {
+        manager.createWallet(JingtumWallet.SWTC_CHAIN, new JCallback() {
             @Override
             public void completion(JCCJson json) {
                 final String address = json.getString("address");
                 String secret = json.getString("secret");
-                manager.importSecret(secret, JTWalletManager.SWTC_CHAIN, new JCallback() {
+                manager.importSecret(secret, JingtumWallet.SWTC_CHAIN, new JCallback() {
                     @Override
                     public void completion(JCCJson json) {
                         Assert.assertEquals(address, json.getString("address"));
@@ -61,7 +62,7 @@ public class JWalletManagerTest {
                 });
             }
         });
-        manager.createWallet(JTWalletManager.SWTC_CHAIN, null);
+        manager.createWallet(JingtumWallet.SWTC_CHAIN, null);
         try {
             sigal.await();
         } catch (InterruptedException e) {
@@ -72,12 +73,12 @@ public class JWalletManagerTest {
     @Test
     public void testCreateBizainWallet() {
         final CountDownLatch sigal = new CountDownLatch(1);
-        manager.createWallet(JTWalletManager.BIZAIN_CHAIN, new JCallback() {
+        manager.createWallet(JingtumWallet.BIZAIN_CHAIN, new JCallback() {
             @Override
             public void completion(JCCJson json) {
                 final String address = json.getString("address");
                 String secret = json.getString("secret");
-                manager.importSecret(secret, JTWalletManager.BIZAIN_CHAIN, new JCallback() {
+                manager.importSecret(secret, JingtumWallet.BIZAIN_CHAIN, new JCallback() {
                     @Override
                     public void completion(JCCJson json) {
                         Assert.assertEquals(address, json.getString("address"));
@@ -116,7 +117,7 @@ public class JWalletManagerTest {
     @Test
     public void testImportSwtcSecret() {
         final CountDownLatch sigal = new CountDownLatch(1);
-        manager.importSecret(SWTC_SECRET, JTWalletManager.SWTC_CHAIN, new JCallback() {
+        manager.importSecret(SWTC_SECRET, JingtumWallet.SWTC_CHAIN, new JCallback() {
             @Override
             public void completion(JCCJson json) {
                 String address = json.getString("address");
@@ -126,7 +127,7 @@ public class JWalletManagerTest {
                 sigal.countDown();
             }
         });
-        manager.importSecret("aaa", JTWalletManager.SWTC_CHAIN, new JCallback() {
+        manager.importSecret("aaa", JingtumWallet.SWTC_CHAIN, new JCallback() {
             @Override
             public void completion(JCCJson json) {
                 String address = json.getString("address");
@@ -136,7 +137,7 @@ public class JWalletManagerTest {
                 sigal.countDown();
             }
         });
-        manager.importSecret(SWTC_SECRET, JTWalletManager.SWTC_CHAIN, null);
+        manager.importSecret(SWTC_SECRET, JingtumWallet.SWTC_CHAIN, null);
         try {
             sigal.await();
         } catch (InterruptedException e) {
@@ -147,7 +148,7 @@ public class JWalletManagerTest {
     @Test
     public void testImportBizainSecret() {
         final CountDownLatch sigal = new CountDownLatch(2);
-        manager.importSecret(BIZAIN_SECRET, JTWalletManager.BIZAIN_CHAIN, new JCallback() {
+        manager.importSecret(BIZAIN_SECRET, JingtumWallet.BIZAIN_CHAIN, new JCallback() {
             @Override
             public void completion(JCCJson json) {
                 String address = json.getString("address");
@@ -157,7 +158,7 @@ public class JWalletManagerTest {
                 sigal.countDown();
             }
         });
-        manager.importSecret("aaa", JTWalletManager.BIZAIN_CHAIN, new JCallback() {
+        manager.importSecret("aaa", JingtumWallet.BIZAIN_CHAIN, new JCallback() {
             @Override
             public void completion(JCCJson json) {
                 String address = json.getString("address");
@@ -177,7 +178,7 @@ public class JWalletManagerTest {
     @Test
     public void testIsValidSwtcAddress() {
         final CountDownLatch sigal = new CountDownLatch(2);
-        manager.isValidAddress(SWTC_ADDRESS, JTWalletManager.SWTC_CHAIN, new JCallback() {
+        manager.isValidAddress(SWTC_ADDRESS, JingtumWallet.SWTC_CHAIN, new JCallback() {
             @Override
             public void completion(JCCJson json) {
                 Boolean valid = json.getBoolean("isValid");
@@ -185,7 +186,7 @@ public class JWalletManagerTest {
                 sigal.countDown();
             }
         });
-        manager.isValidAddress("aaa", JTWalletManager.SWTC_CHAIN, new JCallback() {
+        manager.isValidAddress("aaa", JingtumWallet.SWTC_CHAIN, new JCallback() {
             @Override
             public void completion(JCCJson json) {
                 Boolean valid = json.getBoolean("isValid");
@@ -193,7 +194,7 @@ public class JWalletManagerTest {
                 sigal.countDown();
             }
         });
-        manager.isValidAddress(SWTC_ADDRESS, JTWalletManager.SWTC_CHAIN, null);
+        manager.isValidAddress(SWTC_ADDRESS, JingtumWallet.SWTC_CHAIN, null);
         try {
             sigal.await();
         } catch (InterruptedException e) {
@@ -204,7 +205,7 @@ public class JWalletManagerTest {
     @Test
     public void testIsValidBizainAddress() {
         final CountDownLatch sigal = new CountDownLatch(2);
-        manager.isValidAddress(BIZAIN_ADDRESS, JTWalletManager.BIZAIN_CHAIN, new JCallback() {
+        manager.isValidAddress(BIZAIN_ADDRESS, JingtumWallet.BIZAIN_CHAIN, new JCallback() {
             @Override
             public void completion(JCCJson json) {
                 Boolean valid = json.getBoolean("isValid");
@@ -212,7 +213,7 @@ public class JWalletManagerTest {
                 sigal.countDown();
             }
         });
-        manager.isValidAddress("aaa", JTWalletManager.BIZAIN_CHAIN, new JCallback() {
+        manager.isValidAddress("aaa", JingtumWallet.BIZAIN_CHAIN, new JCallback() {
             @Override
             public void completion(JCCJson json) {
                 Boolean valid = json.getBoolean("isValid");
@@ -230,7 +231,7 @@ public class JWalletManagerTest {
     @Test
     public void testIsValidSwtcSecret() {
         final CountDownLatch sigal = new CountDownLatch(2);
-        manager.isValidSecret(SWTC_SECRET, JTWalletManager.SWTC_CHAIN, new JCallback() {
+        manager.isValidSecret(SWTC_SECRET, JingtumWallet.SWTC_CHAIN, new JCallback() {
             @Override
             public void completion(JCCJson json) {
                 Boolean valid = json.getBoolean("isValid");
@@ -238,7 +239,7 @@ public class JWalletManagerTest {
                 sigal.countDown();
             }
         });
-        manager.isValidSecret("aaaa", JTWalletManager.SWTC_CHAIN, new JCallback() {
+        manager.isValidSecret("aaaa", JingtumWallet.SWTC_CHAIN, new JCallback() {
             @Override
             public void completion(JCCJson json) {
                 Boolean valid = json.getBoolean("isValid");
@@ -246,7 +247,7 @@ public class JWalletManagerTest {
                 sigal.countDown();
             }
         });
-        manager.isValidSecret(SWTC_SECRET, JTWalletManager.SWTC_CHAIN, null);
+        manager.isValidSecret(SWTC_SECRET, JingtumWallet.SWTC_CHAIN, null);
         try {
             sigal.await();
         } catch (InterruptedException e) {
@@ -257,7 +258,7 @@ public class JWalletManagerTest {
     @Test
     public void testIsValidBizainSecret() {
         final CountDownLatch sigal = new CountDownLatch(2);
-        manager.isValidSecret(BIZAIN_SECRET, JTWalletManager.BIZAIN_CHAIN, new JCallback() {
+        manager.isValidSecret(BIZAIN_SECRET, JingtumWallet.BIZAIN_CHAIN, new JCallback() {
             @Override
             public void completion(JCCJson json) {
                 Boolean valid = json.getBoolean("isValid");
@@ -265,7 +266,7 @@ public class JWalletManagerTest {
                 sigal.countDown();
             }
         });
-        manager.isValidSecret("aaaa", JTWalletManager.BIZAIN_CHAIN, new JCallback() {
+        manager.isValidSecret("aaaa", JingtumWallet.BIZAIN_CHAIN, new JCallback() {
             @Override
             public void completion(JCCJson json) {
                 Boolean valid = json.getBoolean("isValid");
@@ -294,21 +295,21 @@ public class JWalletManagerTest {
             transaction.put("Sequence", 1);
             String secret = "snfXQMEVbbZng84CcfdKDASFRi4Hf";
             final String sign = "120000220000000024000000016140000000000F424068400000000000000A732102C13075B18C87A032226CE383AEFD748D7BB719E02CD7F5A8C1F2C7562DE7C12A7446304402201C26C28C8DE3282D6B1ADE62CFFB64173976D33041DB853E7864B9463D189E4B0220265622645B6E56AEB9B42D4946AAAA7D86F37774F3956DEF3A81D4EB4EBA6B2181141270C5BE503A3A22B506457C0FEC97633B44F7DD8314E9A06519E65C7122C67380797BAE5B857E2822CF";
-            manager.sign(transaction, secret, JTWalletManager.SWTC_CHAIN, new JCallback() {
+            manager.sign(transaction, secret, JingtumWallet.SWTC_CHAIN, new JCallback() {
                 @Override
                 public void completion(JCCJson json) {
                     Assert.assertEquals(sign, json.getString("signature"));
                     sigal.countDown();
                 }
             });
-            manager.sign(null, secret, JTWalletManager.SWTC_CHAIN, new JCallback() {
+            manager.sign(null, secret, JingtumWallet.SWTC_CHAIN, new JCallback() {
                 @Override
                 public void completion(JCCJson json) {
                     Assert.assertEquals(null, json.getString("signature"));
                     sigal.countDown();
                 }
             });
-            manager.sign(null, secret, JTWalletManager.SWTC_CHAIN, null);
+            manager.sign(null, secret, JingtumWallet.SWTC_CHAIN, null);
             sigal.await();
         } catch (Throwable e) {
 
@@ -329,7 +330,7 @@ public class JWalletManagerTest {
             transaction.put("Sequence", 1);
             String secret = "ssySqG4BhxpngV2FjAe1SJYFD4dcm";
             final String sign = "120000220000000024000000016140000000000F424068400000000000000A73210305907425BF03CD414D089EB48FE0AB7898B74985F43B0A42EB06588DA6FFC58E74463044022067DAA47DAF9FEF458E5E64993183BDA4B603F9D0582466967E5CD38B5A46FBB1022006003164A4F5FB312E6A5336E69EDE6F18A1D484586470212C3A803474EC11C48114E5C8083009E1C466A7484CF57497009AB5A31AED831486782075FDFAAAB18F245142883C0B56BC23C18F";
-            manager.sign(transaction, secret, JTWalletManager.BIZAIN_CHAIN, new JCallback() {
+            manager.sign(transaction, secret, JingtumWallet.BIZAIN_CHAIN, new JCallback() {
                 @Override
                 public void completion(JCCJson json) {
                     Assert.assertEquals(sign, json.getString("signature"));
@@ -337,7 +338,7 @@ public class JWalletManagerTest {
                 }
             });
 
-            manager.sign(null, secret, JTWalletManager.BIZAIN_CHAIN, new JCallback() {
+            manager.sign(null, secret, JingtumWallet.BIZAIN_CHAIN, new JCallback() {
                 @Override
                 public void completion(JCCJson json) {
                     Assert.assertEquals(null, json.getString("signature"));

@@ -1,17 +1,10 @@
-package com.android.jccdex.app;
+package com.android.jccdex.app.jingtum;
 
 import com.android.jccdex.app.base.JCallback;
 
 import org.json.JSONObject;
 
-/**
- * JWallet
- *
- * @author wanggang
- * Copyright © 2019 JCCDex. All rights reserved.
- */
-public interface JWallet {
-
+public interface IJingtum {
     /**
      * @param chain    default with swt.
      * @param callback
@@ -46,5 +39,4 @@ public interface JWallet {
      * @param callback
      */
     void sign(JSONObject transaction, String secret, String chain, JCallback callback);
-
 }

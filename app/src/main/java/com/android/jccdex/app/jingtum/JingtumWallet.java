@@ -1,4 +1,4 @@
-package com.android.jccdex.app;
+package com.android.jccdex.app.jingtum;
 
 import android.content.Context;
 
@@ -9,22 +9,15 @@ import com.github.lzyzsd.jsbridge.CallBackFunction;
 
 import org.json.JSONObject;
 
-/**
- * JWalletManager
- *
- * @author wanggang
- * Copyright © 2019 JCCDex. All rights reserved.
- */
-public class JTWalletManager implements JWallet {
-    
+public class JingtumWallet implements IJingtum {
     public static final String SWTC_CHAIN = "swt";
     public static final String BIZAIN_CHAIN = "bwt";
 
     private static final String JINGTUM_JS = "file:///android_asset/index.html";
     private static BridgeWebView mWebview;
-    private static JTWalletManager instance = new JTWalletManager();
+    private static JingtumWallet instance = new JingtumWallet();
 
-    private JTWalletManager() {
+    private JingtumWallet() {
     }
 
     public void init(Context context) {
@@ -32,7 +25,7 @@ public class JTWalletManager implements JWallet {
         mWebview.loadUrl(JINGTUM_JS);
     }
 
-    public static JTWalletManager getInstance() {
+    public static JingtumWallet getInstance() {
         return instance;
     }
 
