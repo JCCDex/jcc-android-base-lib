@@ -104,9 +104,8 @@ public class EthereumWallet implements IEthereum {
     public void toIban(String address, final JCallback callback) {
         mWebview.callHandler("toEtherumIban", address, new CallBackFunction() {
             @Override
-            public void onCallBack(String iban) {
-                JCCJson jccJson = new JCCJson();
-                jccJson.put("iban", iban);
+            public void onCallBack(String data) {
+                JCCJson jccJson = new JCCJson(data);
                 if (callback != null) {
                     callback.completion(jccJson);
                 }
@@ -118,9 +117,8 @@ public class EthereumWallet implements IEthereum {
     public void fromIban(String iban, final JCallback callback) {
         mWebview.callHandler("fromEthereumIban", iban, new CallBackFunction() {
             @Override
-            public void onCallBack(String address) {
-                JCCJson jccJson = new JCCJson();
-                jccJson.put("address", address);
+            public void onCallBack(String data) {
+                JCCJson jccJson = new JCCJson(data);
                 if (callback != null) {
                     callback.completion(jccJson);
                 }

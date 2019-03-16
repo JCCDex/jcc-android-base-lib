@@ -103,13 +103,25 @@
         })
 
         bridge.registerHandler("toEtherumIban", function (address, responseCallback) {
-            var iban = web3.eth.Iban.toIban(address);
-            responseCallback(iban);
+            var obj = {};
+            try {
+                var iban = web3.eth.Iban.toIban(address);
+                obj.iban = iban;
+            } catch (error) {
+                obj.errorMessage = error.message;
+            }
+            responseCallback(obj);
         })
 
         bridge.registerHandler("fromEthereumIban", function (iban, responseCallback) {
-            var address = web3.eth.Iban.toAddress(iban);
-            responseCallback(address);
+            var obj = {};
+            try {
+                var address = web3.eth.Iban.toAddress(iban);
+                obj.address = address;
+            } catch (error) {
+                obj.errorMessage = error.message;
+            }
+            responseCallback(obj);
         })
 
         bridge.registerHandler("signEthereumTransaction", function (data, responseCallback) {
