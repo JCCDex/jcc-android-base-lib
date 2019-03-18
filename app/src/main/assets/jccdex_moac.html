@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body>
+</body>
+<script src="polyfill.min.js"></script>
+<script src="moac.min.js"></script>
+<script src="uuid_v4.js"></script>
+<script>
+    function connectWebViewJavascriptBridge(callback) {
+        if (window.WebViewJavascriptBridge) {
+            callback(WebViewJavascriptBridge)
+        } else {
+            document.addEventListener(
+                'WebViewJavascriptBridgeReady',
+                function () {
+                    callback(WebViewJavascriptBridge)
+                },
+                false
+            );
+        }
+    }
+
+    connectWebViewJavascriptBridge(function (bridge) {
+
+        bridge.registerHandler("initChain3", function (node, responseCallback) {
+            moacInstance = new Moac(node, true);
+            moacInstance.initChain3();
+            responseCallback();
+        })
+
+        bridge.registerHandler("createMoacWallet", function (data, responseCallback) {
+            Moac.createWallet(uuidv4(), uuidv4()).then(function (wallet) {
+                responseCallback(wallet);
+            }).catch(function (error) {
+                responseCallback({
+                    errorMessage: error.message
+                })
+            })
+        });
+
+        bridge.registerHandler("isValidMoacAddress", function (address, responseCallback) {
+            responseCallback(Moac.isValidAddress(address));
+        })
+
+        bridge.registerHandler("isValidMoacSecret", function (secret, responseCallback) {
+            responseCallback(Moac.isValidSecret(secret));
+        })
+
+        bridge.registerHandler("importMoacSecret", function (secret, responseCallback) {
+            var address = Moac.getAddress(secret)
+            var wallet = {};
+            if (address !== null) {
+                wallet.address = address;
+                wallet.secret = secret;
+            }
+            responseCallback(wallet);
+        })
+
+        bridge.registerHandler("toMoacIban", function (address, responseCallback) {
+            var obj = {};
+            try {
+                var iban = moacInstance._chain3.mc.iban.fromAddress(address);
+                obj.iban = iban.toString();
+            } catch (error) {
+                obj.errorMessage = error.message;
+            }
+            responseCallback(obj);
+        })
+
+        bridge.registerHandler("fromMoacIban", function (iban, responseCallback) {
+            var obj = {};
+            try {
+                var chain3 = moacInstance._chain3
+                var i = new chain3.mc.iban(iban);
+                obj.address = '0x' + i.address();
+            } catch (error) {
+                obj.errorMessage = error.message;
+            }
+            responseCallback(obj);
+        })
+
+        bridge.registerHandler("signMoacTransaction", function (data, responseCallback) {
+            var obj = {};
+            try {
+                data = JSON.parse(data);
+                var transaction = data.transaction;
+                var secret = data.secret;
+                if (!transaction.abi) {
+                    var to = transaction.to;
+                    var from = transaction.from;
+                    var value = transaction.value;
+                    var gasLimit = transaction.gas;
+                    var gasPrice = transaction.gasPrice;
+                    moacInstance.getNonce(from).then(function (nonce) {
+                        var tx = moacInstance.getTx(from, to, nonce, gasLimit, gasPrice, value);
+                        var signedTransaction = moacInstance._chain3.signTransaction(tx, secret);
+                        obj.rawTransaction = signedTransaction;
+                        responseCallback(obj)
+                    }).catch(function (error) {
+                        obj.errorMessage = error.message
+                        responseCallback(obj);
+                    })
+                }
+            } catch (error) {
+                obj.errorMessage = error.message
+                responseCallback(obj);
+            }
+        })
+
+        bridge.registerHandler("sendMoacSignedTransaction", function (rawTransaction, responseCallback) {
+            var obj = {};
+            moacInstance.sendRawSignedTransaction(rawTransaction).then(function (hash) {
+                obj.hash = hash;
+                responseCallback(obj);
+            }).catch(function (error) {
+                obj.errorMessage = error.message;
+                responseCallback(obj);
+            })
+        })
+
+        bridge.registerHandler("moacGasPrice", function (data, responseCallback) {
+            moacInstance.getGasPrice().then(function (gas) {
+                var obj = {
+                    gasPrice: gas
+                };
+                responseCallback(obj);
+            })
+        })
+
+        bridge.registerHandler("moacBalance", function (address, responseCallback) {
+            moacInstance.getBalance(address).then(function (balance) {
+                var obj = {};
+                obj.balance = balance + "";
+                responseCallback(obj);
+            })
+        })
+    })
+</script>
+
+</html>
