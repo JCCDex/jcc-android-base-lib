@@ -59,6 +59,7 @@
 
         bridge.registerHandler("importMoacWords", function (words, responseCallback) {
             Moac.createWallet(uuidv4(), words).then(function (wallet) {
+                delete wallet.words;
                 responseCallback(wallet);
             }).catch(function (error) {
                 responseCallback({
