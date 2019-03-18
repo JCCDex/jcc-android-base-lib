@@ -57,6 +57,16 @@
             responseCallback(wallet);
         })
 
+        bridge.registerHandler("importMoacWords", function (words, responseCallback) {
+            Moac.createWallet(uuidv4(), words).then(function (wallet) {
+                responseCallback(wallet);
+            }).catch(function (error) {
+                responseCallback({
+                    errorMessage: error.message
+                })
+            })
+        })
+
         bridge.registerHandler("toMoacIban", function (address, responseCallback) {
             var obj = {};
             try {

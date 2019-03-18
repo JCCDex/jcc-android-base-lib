@@ -13,6 +13,8 @@ public interface IMoac {
 
     void importSecret(String secret, JCallback callback);
 
+    void importWords(String words, JCallback callback);
+
     void toIban(String address, JCallback callback);
 
     void fromIban(String iban, JCallback callback);

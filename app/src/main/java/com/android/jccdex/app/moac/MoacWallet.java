@@ -81,6 +81,17 @@ public class MoacWallet implements IMoac {
     }
 
     @Override
+    public void importWords(String words, final JCallback callback) {
+        mWebview.callHandler("importMoacWords", words, new CallBackFunction() {
+            @Override
+            public void onCallBack(String data) {
+                JCCJson jccJson = new JCCJson(data);
+                callback.completion(jccJson);
+            }
+        });
+    }
+
+    @Override
     public void toIban(String address, @NonNull final JCallback callback) {
         mWebview.callHandler("toMoacIban", address, new CallBackFunction() {
             @Override

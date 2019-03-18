@@ -4,7 +4,6 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.android.jccdex.app.base.JCallback;
-import com.android.jccdex.app.ethereum.EthereumWallet;
 import com.android.jccdex.app.moac.MoacWallet;
 import com.android.jccdex.app.util.JCCJson;
 
@@ -47,9 +46,15 @@ public class MoacWalletTest {
             public void completion(JCCJson json) {
                 final String address = json.getString("address");
                 final String secret = json.getString("secret");
-                Assert.assertNotNull(address);
-                Assert.assertNotNull(secret);
-                sigal.countDown();
+                final String words = json.getString("words");
+                manager.importWords(words, new JCallback() {
+                    @Override
+                    public void completion(JCCJson json) {
+                        Assert.assertEquals(address, json.getString("address"));
+                        Assert.assertEquals(secret, json.getString("secret"));
+                        sigal.countDown();
+                    }
+                });
             }
         });
         try {
@@ -86,7 +91,6 @@ public class MoacWalletTest {
 
         }
     }
-
 
     @Test
     public void testIsValidSecret() {
