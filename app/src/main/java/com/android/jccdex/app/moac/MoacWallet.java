@@ -25,7 +25,7 @@ public class MoacWallet implements IMoac {
         return instance;
     }
 
-    public void initChian3Provider(String node) {
+    public void initChain3Provider(String node) {
         mWebview.callHandler("initChain3", node, new CallBackFunction() {
             @Override
             public void onCallBack(String data) {

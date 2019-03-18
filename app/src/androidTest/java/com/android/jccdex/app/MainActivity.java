@@ -25,7 +25,7 @@ public class MainActivity extends Activity {
         mEthereumWallet.init(this);
         mEthereumWallet.initWeb3Provider("https://eth626892d.jccdex.cn");
         mMoacWallet.init(this);
-        mMoacWallet.initChian3Provider("https://moac1ma17f1.jccdex.cn");
+        mMoacWallet.initChain3Provider("https://moac1ma17f1.jccdex.cn");
     }
 
     public JingtumWallet getJTWalletManager() {
