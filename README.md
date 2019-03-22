@@ -501,3 +501,73 @@ mMoacWallet.getBalance(address, new JCallback() {
     }
 });
 ```
+
+## API of EosWallet
+
+Interface for interacting with the node sdk of eos. Create EosWallet with Context in your activity.
+
+```java
+private EosWallet mEosWallet;
+
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);
+    mEosWallet = EosWallet.getInstance();
+    mEosWallet.init(this);
+    String eosChainId = "";
+    String eosHttpEndpoint = "";
+    mEosWallet.initEosProvider(eosChainId, eosHttpEndpoint);
+}
+```
+
+### importSecret
+
+```java
+String secret = "";
+
+mEosWallet.importSecret(secret, new JCallback() {
+    @Override
+    public void completion(JCCJson jccJson) {
+        String secret = jccJson.getString("secret");
+        String address = jccJson.getString("address");
+        // the secret and address is not null if import secret successfully
+    }
+});
+```
+
+### sendTransaction
+
+```java
+JSONObject transaction = new JSONObject();
+
+transaction.put("contract", "");
+transaction.put("from", "");
+transaction.put("value", "");
+transaction.put("to", "");
+transaction.put("memo", "");
+
+String secret = "";
+
+mEosWallet.sendTransaction(transaction, secret, new JCallback() {
+    @Override
+    public void completion(JCCJson jccJson) {
+        String hash = json.getString("hash");
+        // the hash is not null if the send successfully.
+    }
+});
+```
+
+### getBalance
+
+```java
+String account = "";
+
+mEosWallet.getBalance(account, new JCallback() {
+    @Override
+    public void completion(JCCJson jccJson) {
+        String balance = json.getString("balance");
+        // the balance is not null if request balance successfully.
+    }
+});
+```
